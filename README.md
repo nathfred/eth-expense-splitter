@@ -1,9 +1,4 @@
-# 🏗 Scaffold-ETH 2
-
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+# ETH Expense Splitter
 
 🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
 
@@ -29,60 +24,68 @@ Before you begin, you need to install the following tools:
 
 To get started with Scaffold-ETH 2, follow the steps below:
 
-1. Install the latest version of Scaffold-ETH 2
+1. Setup terminal directory
 
 ```
-npx create-eth@latest
+cd eth-expense-splitter
 ```
 
-This command will install all the necessary packages and dependencies, so it might take a while.
-
-> [!NOTE]
-> You can also initialize your project with one of our extensions to add specific features or starter-kits. Learn more in our [extensions documentation](https://docs.scaffoldeth.io/extensions/).
-
-2. Run a local network in the first terminal:
+2. Install dependencies
 
 ```
-yarn chain
+yarn install
 ```
 
-This command starts a local Ethereum network that runs on your local machine and can be used for testing and development. Learn how to [customize your network configuration](https://docs.scaffoldeth.io/quick-start/environment#1-initialize-a-local-blockchain).
-
-3. On a second terminal, deploy the test contract:
+3. Navigate to hardhat directory
 
 ```
-yarn deploy
+cd packages/hardhat
 ```
 
-This command deploys a test smart contract to the local network. You can find more information about how to customize your contract and deployment script in our [documentation](https://docs.scaffoldeth.io/quick-start/environment#2-deploy-your-smart-contract).
-
-4. On a third terminal, start your NextJS app:
+4. Navigate to hardhat directory
 
 ```
-yarn start
+cd packages/hardhat
 ```
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+5. Init hardhat
 
-**What's next**:
+```
+cd packages/hardhat
+```
 
-Visit the [What's next section of our docs](https://docs.scaffoldeth.io/quick-start/environment#whats-next) to learn how to:
+6. Deploy contract
 
-- Edit your smart contracts
-- Edit your deployment scripts
-- Customize your frontend
-- Edit the app config
-- Writing and running tests
-- [Setting up external services and API keys](https://docs.scaffoldeth.io/deploying/deploy-smart-contracts#configuration-of-third-party-services-for-production-grade-apps)
+```
+yarn hardhat run scripts/deploy.ts --network localhost
+```
 
-## Documentation
+7. Navigate to nextjs directory
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn all the technical details and guides of Scaffold-ETH 2.
+```
+cd packages/nextjs
+```
 
-To know more about its features, check out our [website](https://scaffoldeth.io).
+7. Navigate to nextjs directory
 
-## Contributing to Scaffold-ETH 2
+```
+cd packages/nextjs
+```
 
-We welcome contributions to Scaffold-ETH 2!
+8. Start the Hardhat local blockchain
 
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+```
+yarn hardhat node
+```
+
+9. Deploy contract
+
+```
+yarn hardhat run scripts/deploy.ts --network localhost
+```
+
+10. Start frontend
+
+```
+yarn dev
+```
