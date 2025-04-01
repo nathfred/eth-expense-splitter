@@ -1,13 +1,16 @@
-import { ethers } from "hardhat";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { DeployFunction } from "hardhat-deploy/types";
 
-async function main() {
-  const ExpenseSplitter = await ethers.getContractFactory("ExpenseSplitter");
-  const expenseSplitter = await ExpenseSplitter.deploy();
-  await expenseSplitter.deployed();
-  console.log("ExpenseSplitter deployed to:", expenseSplitter.address);
-}
+const deployExpenseSplitter: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+  const { deployments, getNamedAccounts } = hre;
+  const { deploy } = deployments;
+  const { deployer } = await getNamedAccounts();
 
-main().catch(error => {
-  console.error(error);
-  process.exitCode = 1;
-});
+  await deploy("ExpenseSplitter", {
+    from: deployer,
+    log: true,
+  });
+};
+
+export default deployExpenseSplitter;
+deployExpenseSplitter.tags = ["ExpenseSplitter"];
