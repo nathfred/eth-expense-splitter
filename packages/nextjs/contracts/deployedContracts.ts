@@ -26,6 +26,12 @@ const deployedContracts = {
             {
               indexed: false,
               internalType: "uint256",
+              name: "expenseId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
               name: "amount",
               type: "uint256",
             },
@@ -41,6 +47,12 @@ const deployedContracts = {
               internalType: "address",
               name: "user",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "expenseId",
+              type: "uint256",
             },
             {
               indexed: false,
@@ -66,14 +78,31 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [
+          inputs: [],
+          name: "getMyExpenses",
+          outputs: [
             {
-              internalType: "address",
+              internalType: "uint256[]",
               name: "",
-              type: "address",
+              type: "uint256[]",
+            },
+            {
+              internalType: "uint256[]",
+              name: "",
+              type: "uint256[]",
+            },
+            {
+              internalType: "bool[]",
+              name: "",
+              type: "bool[]",
             },
           ],
-          name: "balances",
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "nextExpenseId",
           outputs: [
             {
               internalType: "uint256",
@@ -100,24 +129,45 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
               internalType: "uint256",
               name: "",
               type: "uint256",
             },
           ],
-          name: "participants",
+          name: "userExpenses",
           outputs: [
             {
-              internalType: "address",
-              name: "",
-              type: "address",
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+            {
+              internalType: "bool",
+              name: "isWithdrawn",
+              type: "bool",
             },
           ],
           stateMutability: "view",
           type: "function",
         },
         {
-          inputs: [],
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "expenseId",
+              type: "uint256",
+            },
+          ],
           name: "withdrawFunds",
           outputs: [],
           stateMutability: "nonpayable",
