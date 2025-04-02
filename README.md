@@ -1,13 +1,13 @@
 # ETH Expense Splitter by nathfred
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain.
+🧪 Inspired by split bill feature. Currently only featured for evenly split bill.
 
-⚙️ Built using NextJS, RainbowKit, Foundry/Hardhat, Wagmi, Viem, and Typescript.
+⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
+- ✅ **Contract Hot Reload**: The frontend auto-adapts to we edit the smart contract.
 - 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
+- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build the frontend.
+- 🔥 **Burner Wallet & Local Faucet**: Quickly test the application with a burner wallet and local faucet.
 - 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
 
 ## Requirements
@@ -40,49 +40,25 @@ yarn install
 cd packages/hardhat
 ```
 
-4. Navigate to hardhat directory
-
-```
-cd packages/hardhat
-```
-
-5. Init hardhat
-
-```
-cd packages/hardhat
-```
-
-6. Deploy contract
-
-```
-yarn hardhat run scripts/deploy.ts --network localhost
-```
-
-7. Navigate to nextjs directory
-
-```
-cd packages/nextjs
-```
-
-7. Navigate to nextjs directory
-
-```
-cd packages/nextjs
-```
-
-8. Start the Hardhat local blockchain
+4. Start the Hardhat local blockchain:
 
 ```
 yarn hardhat node
 ```
 
-9. Deploy contract
+5. Open other terminal and deploy the contract on hardhat chain
 
 ```
-yarn hardhat run scripts/deploy.ts --network localhost
+yarn hardhat deploy --network hardhat
 ```
 
-10. Start frontend
+7. Navigate to nextjs directory
+
+```
+cd packages/nextjs
+```
+
+7. Start the frontend
 
 ```
 yarn dev
