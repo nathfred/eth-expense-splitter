@@ -7,8 +7,7 @@ import deployedContracts from "~~/contracts/deployedContracts";
 const ExpenseSplitter = () => {
   const [amount, setAmount] = useState("");
   const [participants, setParticipants] = useState<string[]>([]);
-  // const [message, setMessage] = useState("");
-  const [expenses, setExpenses] = useState<any[]>([]);
+  const [expenses, setExpenses] = useState<{ id: number; amount: string; status: string }[]>([]);
 
   useEffect(() => {
     fetchExpenses();
@@ -23,8 +22,11 @@ const ExpenseSplitter = () => {
       deployedContracts[31337].ExpenseSplitter.abi,
       signer,
     );
+
     const addresses = participants.map(addr => addr.trim());
-    await contract.addExpense(addresses, { value: ethers.parseEther(amount) });
+    const tx = await contract.addExpense(addresses, { value: ethers.parseEther(amount) });
+    await tx.wait();
+    fetchExpenses();
   };
 
   const fetchExpenses = async () => {
@@ -36,14 +38,18 @@ const ExpenseSplitter = () => {
       deployedContracts[31337].ExpenseSplitter.abi,
       signer,
     );
-    const funds = await contract.balances(await signer.getAddress());
-    const isWithdrawn = await contract.isWithdrawn();
-    setExpenses([
-      { address: contract.target, funds: ethers.formatEther(funds), status: isWithdrawn ? "Withdrawn" : "Active" },
-    ]);
+
+    const [ids, amounts, statuses] = await contract.getMyExpenses();
+    const formattedExpenses = ids.map((id: bigint, index: number) => ({
+      id: Number(id),
+      amount: ethers.formatEther(amounts[index]),
+      status: statuses[index] ? "Withdrawn" : "Active",
+    }));
+
+    setExpenses(formattedExpenses);
   };
 
-  const withdrawFunds = async () => {
+  const withdrawFunds = async (expenseId: number) => {
     if (!window.ethereum) return alert("Install Metamask");
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
@@ -52,7 +58,10 @@ const ExpenseSplitter = () => {
       deployedContracts[31337].ExpenseSplitter.abi,
       signer,
     );
-    await contract.withdrawFunds();
+
+    const tx = await contract.withdrawFunds(expenseId);
+    await tx.wait();
+    fetchExpenses();
   };
 
   return (
@@ -62,6 +71,7 @@ const ExpenseSplitter = () => {
         className="p-2 border rounded"
         type="text"
         placeholder="Amount in ETH"
+        value={amount}
         onChange={e => setAmount(e.target.value)}
       />
       {participants.map((participant, index) => (
@@ -90,22 +100,31 @@ const ExpenseSplitter = () => {
       </button>
       <div className="w-full bg-white p-6 rounded shadow">
         <h3 className="text-lg font-semibold">My Expense Splitters</h3>
-        {expenses.map((expense, index) => (
-          <div key={index} className="p-4 border-b flex justify-between items-center">
-            <span className="truncate w-2/3">{expense.address}</span>
-            <span className="font-bold">{expense.funds} ETH</span>
-            <span
-              className={expense.status === "Withdrawn" ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}
-            >
-              {expense.status}
-            </span>
-            <span>
-              <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600" onClick={withdrawFunds}>
-                Withdraw
-              </button>
-            </span>
-          </div>
-        ))}
+        {expenses.length > 0 ? (
+          expenses.map((expense, index) => (
+            <div key={index} className="p-4 border-b flex justify-between items-center">
+              <span className="w-1/3">ID: {expense.id}</span>
+              <span className="font-bold">{expense.amount} ETH</span>
+              <span
+                className={
+                  expense.status === "Withdrawn" ? "text-green-600 font-semibold" : "text-red-600 font-semibold"
+                }
+              >
+                {expense.status}
+              </span>
+              {!expense.status.includes("Withdrawn") && (
+                <button
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  onClick={() => withdrawFunds(expense.id)}
+                >
+                  Withdraw
+                </button>
+              )}
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">No expenses found</p>
+        )}
       </div>
     </div>
   );
