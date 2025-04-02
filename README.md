@@ -1,6 +1,6 @@
 # ETH Expense Splitter by nathfred
 
-🧪 Inspired by split bill feature. Currently only featured for evenly split bill.
+🧪 Inspired by split bill feature. Now support multi expense per user feature.
 
 ⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
 
