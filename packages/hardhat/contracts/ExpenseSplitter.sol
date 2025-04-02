@@ -5,12 +5,14 @@ contract ExpenseSplitter {
     address public owner;
     mapping(address => uint256) public balances;
     address[] public participants;
+    bool public isWithdrawn;
 
     event ExpenseAdded(address indexed payer, uint256 amount);
     event FundsWithdrawn(address indexed user, uint256 amount);
 
     constructor() {
         owner = msg.sender;
+        isWithdrawn = false;
     }
 
     function addExpense(address[] memory _participants) public payable {
@@ -19,6 +21,7 @@ contract ExpenseSplitter {
         for (uint256 i = 0; i < _participants.length; i++) {
             balances[_participants[i]] += share;
         }
+        isWithdrawn = false;
         emit ExpenseAdded(msg.sender, msg.value);
     }
 
@@ -27,6 +30,7 @@ contract ExpenseSplitter {
         require(amount > 0, "No funds to withdraw");
         balances[msg.sender] = 0;
         payable(msg.sender).transfer(amount);
+        isWithdrawn = true;
         emit FundsWithdrawn(msg.sender, amount);
     }
 }
