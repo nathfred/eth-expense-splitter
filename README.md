@@ -40,13 +40,13 @@ yarn install
 cd packages/hardhat
 ```
 
-4. Start the Hardhat local blockchain:
+4. Start the Hardhat local hardhat blockchain
 
 ```
-yarn hardhat node
+yarn hardhat node --network hardhat
 ```
 
-5. Open other terminal and deploy the contract on hardhat chain
+5. Open other terminal and deploy the contract on local hardhat blockchain
 
 ```
 yarn hardhat deploy --network hardhat
